@@ -22,16 +22,16 @@ public class ResoniteWasm : ResoniteMod {
         Harmony harmony = new("top.lolosia.ResoniteWasm");
         harmony.PatchAll();
 
-        var engine = new Engine();
-        var module = Module.FromText(
+        using var engine = new Engine();
+        using var module = Module.FromText(
             engine,
             "hello",
-            "(module (func $hello (import \"\" \"hello\")) (func (export \"run\") (call $hello)))"
+            "(module (func $hello (import \"test\" \"hello\")) (func (export \"run\") (call $hello)))"
         );
-        var linker = new Linker(engine);
-        var store = new Store(engine);
+        using var linker = new Linker(engine);
+        using var store = new Store(engine);
         linker.Define(
-            "",
+            "test",
             "hello",
             Function.FromCallback(store, () => Msg("Hello from C#!"))
         );
