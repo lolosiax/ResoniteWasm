@@ -2,8 +2,8 @@
 
 [assembly: AssemblyTitle("ResoniteWasm")]
 [assembly: AssemblyProduct("ResoniteWasm")]
-[assembly: AssemblyDescription("Description of your mod")]
-[assembly: AssemblyCompany("ExampleAuthor")]
-[assembly: AssemblyCopyright("Copyright © 2024 ExampleAuthor")]
+[assembly: AssemblyDescription("This is a runtime of the WASM.")]
+[assembly: AssemblyCompany("Lolosia")]
+[assembly: AssemblyCopyright("Copyright © 2024 Lolosia")]
 [assembly: AssemblyVersion(ResoniteWasm.ResoniteWasm.VERSION_CONSTANT)]
 [assembly: AssemblyFileVersion(ResoniteWasm.ResoniteWasm.VERSION_CONSTANT)]

@@ -4,6 +4,13 @@ A [ResoniteModLoader](https://github.com/resonite-modding-group/ResoniteModLoade
 <!-- Edit to describe what your mod does and what it may solve -->
 <!-- If your mod solves an issue, you should link to any relevant issues on the resonite github -->
 
+**I haven't written this README.md yet**
+
+## References
+Here's the code I referenced or copied into the project
+
+[Wasmtime](https://github.com/bytecodealliance/wasmtime)  
+[Wasmtime .NET](https://github.com/bytecodealliance/wasmtime-dotnet)
 
 ## Screenshots
 <!-- If your mod has visible effects in the game, attach some images or video of it in-use here! Otherwise remove this section -->

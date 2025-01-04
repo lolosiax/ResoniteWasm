@@ -4,6 +4,10 @@ using HarmonyLib;
 
 using ResoniteModLoader;
 
+using Wasmtime;
+
+using Engine = Wasmtime.Engine;
+
 namespace ResoniteWasm;
 
 //More info on creating mods can be found https://github.com/resonite-modding-group/ResoniteModLoader/wiki/Creating-Mods
@@ -17,6 +21,24 @@ public class ResoniteWasm : ResoniteMod {
     public override void OnEngineInit() {
         Harmony harmony = new("top.lolosia.ResoniteWasm");
         harmony.PatchAll();
+
+        var engine = new Engine();
+        var module = Module.FromText(
+            engine,
+            "hello",
+            "(module (func $hello (import \"\" \"hello\")) (func (export \"run\") (call $hello)))"
+        );
+        var linker = new Linker(engine);
+        var store = new Store(engine);
+        linker.Define(
+            "",
+            "hello",
+            Function.FromCallback(store, () => Msg("Hello from C#!"))
+        );
+
+        var instance = linker.Instantiate(store, module);
+        var run = instance.GetAction("run")!;
+        run();
     }
 
     //Example of how a HarmonyPatch can be formatted, Note that the following isn't a real patch and will not compile.
