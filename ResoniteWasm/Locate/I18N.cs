@@ -38,13 +38,14 @@ public class I18N {
         code = code.ToLower();
 
         locateMap.Clear();
-        var en = GetText("en")!;
+
+        // The default fallback language is machine translation,
+        // and it is recommended that you contribute a human-translated version.
+        // Do not change "en-fallback" here.
+        var en = GetText("en-fallback")!;
         foreach (KeyValuePair<string, string> it in en) {
             locateMap[it.Key] = it.Value;
         }
-        
-        // if language is English, skip.
-        if (code == "en") return;
 
         // TODO: Replace traditional Chinese with simplified Chinese until someone else contributes
         // 在有人贡献繁体中文前，以简体中文替代
