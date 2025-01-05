@@ -11,12 +11,12 @@ using Newtonsoft.Json;
 
 using ResoniteWasm.Config;
 
-namespace ResoniteWasm.Locate;
+namespace ResoniteWasm.Locale;
 
 public class I18N {
     public static I18N Instance { get; private set; } = new();
 
-    private Dictionary<string, string> locateMap = new();
+    private readonly Dictionary<string, string> mLocateMap = new();
 
 
     public void Initialize() {
@@ -25,7 +25,7 @@ public class I18N {
     }
 
     public string GetValue(string id) {
-        return locateMap.TryGetValue(id, out string? value) ? value : id;
+        return mLocateMap.TryGetValue(id, out string? value) ? value : id;
     }
 
     private void LoadLocaleMap() {
@@ -37,14 +37,14 @@ public class I18N {
         Msg($"Active Language: {code}");
         code = code.ToLower();
 
-        locateMap.Clear();
+        mLocateMap.Clear();
 
         // The default fallback language is machine translation,
         // and it is recommended that you contribute a human-translated version.
         // Do not change "en-fallback" here.
         var en = GetText("en-fallback")!;
         foreach (KeyValuePair<string, string> it in en) {
-            locateMap[it.Key] = it.Value;
+            mLocateMap[it.Key] = it.Value;
         }
 
         // TODO: Replace traditional Chinese with simplified Chinese until someone else contributes
@@ -55,8 +55,8 @@ public class I18N {
         // if language not found, skip.
         if (local == null) return;
         foreach (KeyValuePair<string, string> it in local) {
-            if (locateMap.ContainsKey(it.Key)) locateMap.Remove(it.Key);
-            locateMap[it.Key] = it.Value;
+            if (mLocateMap.ContainsKey(it.Key)) mLocateMap.Remove(it.Key);
+            mLocateMap[it.Key] = it.Value;
         }
     }
 

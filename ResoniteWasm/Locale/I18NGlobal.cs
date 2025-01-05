@@ -1,4 +1,4 @@
-﻿namespace ResoniteWasm.Locate;
+﻿namespace ResoniteWasm.Locale;
 
 public static class I18NGlobal {
     

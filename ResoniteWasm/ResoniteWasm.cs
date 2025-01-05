@@ -9,7 +9,7 @@ using HarmonyLib;
 using ResoniteModLoader;
 
 using ResoniteWasm.Config;
-using ResoniteWasm.Locate;
+using ResoniteWasm.Locale;
 
 using Wasmtime;
 
