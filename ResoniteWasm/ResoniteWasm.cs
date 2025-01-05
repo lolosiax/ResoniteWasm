@@ -10,6 +10,7 @@ using ResoniteModLoader;
 
 using ResoniteWasm.Config;
 using ResoniteWasm.Locale;
+using ResoniteWasm.Util;
 
 using Wasmtime;
 
@@ -25,7 +26,7 @@ public class ResoniteWasm : ResoniteMod {
     public static ResoniteWasm ModInstance => mInstance!;
     private static ResoniteWasm? mInstance;
 
-    public static ModConfiguration Config => mInstance!.GetConfiguration()!;
+    public static ModConfiguration ModConfig => mInstance!.GetConfiguration()!;
 
     internal const string VERSION_CONSTANT = "1.0.0"; //Changing the version here updates it in all locations needed
     public override string Name => "ResoniteWasm";
@@ -35,11 +36,12 @@ public class ResoniteWasm : ResoniteMod {
 
     public override void OnEngineInit() {
         mInstance = this;
+        ConsoleLogger.Initialize();
 
         Harmony harmony = new("top.lolosia.ResoniteWasm");
         harmony.PatchAll();
 
-        Config.Save();
+        ModConfig.Save();
 
         using var engine = new WasmEngine();
         using var module = Module.FromText(
@@ -58,14 +60,13 @@ public class ResoniteWasm : ResoniteMod {
         var instance = linker.Instantiate(store, module);
         var run = instance.GetAction("run")!;
         run();
-        
-        Engine.Current.RunPostInit(PostInit);
 
+        Engine.Current.RunPostInit(PostInit);
     }
 
     private void PostInit() {
         I18N.Instance.Initialize();
-        
+
         Engine.Current.WorldManager.WorldFocused += world => {
             Msg($"Change to world, {world.Name}");
         };
