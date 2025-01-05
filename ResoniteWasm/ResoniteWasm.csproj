@@ -10,7 +10,7 @@
         <Deterministic>true</Deterministic>
         <!-- Change CopyToMods to true if you'd like builds to be moved into the Mods folder automatically-->
         <CopyToMods Condition="'$(CopyToMods)'==''">true</CopyToMods>
-        <DebugType Condition="'$(Configuration)'=='Debug'">embedded</DebugType>
+        <DebugType Condition="'$(Configuration)'=='Debug'">full</DebugType>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(ResonitePath)'==''">
@@ -47,14 +47,24 @@
             <HintPath>$(ResonitePath)Resonite_Data\Managed\Elements.Core.dll</HintPath>
             <Private>False</Private>
         </Reference>
+        <Reference Include="ResoniteModSettings">
+            <HintPath>$(ResonitePath)rml_mods\ResoniteModSettings.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="Wasmtime" Version="22.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="..\Locale\*.json" LinkBase="Locale" />
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(CopyToMods)'=='true'">
         <Message Text="Attempting to copy $(TargetFileName) to $(ResonitePath)rml_mods" Importance="high" />
         <Copy SourceFiles="$(TargetDir)$(TargetFileName)" DestinationFolder="$(ResonitePath)rml_mods" ContinueOnError="true" />
+        <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="$(ResonitePath)rml_mods" ContinueOnError="true" />
     </Target>
 </Project>

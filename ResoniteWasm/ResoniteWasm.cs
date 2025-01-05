@@ -1,17 +1,32 @@
+using System;
+using System.Linq;
+using System.Reflection;
+
 using FrooxEngine;
 
 using HarmonyLib;
 
 using ResoniteModLoader;
 
+using ResoniteWasm.Config;
+using ResoniteWasm.Locate;
+
 using Wasmtime;
 
-using Engine = Wasmtime.Engine;
+using Engine = FrooxEngine.Engine;
+using Module = Wasmtime.Module;
+using WasmEngine = Wasmtime.Engine;
 
 namespace ResoniteWasm;
 
 //More info on creating mods can be found https://github.com/resonite-modding-group/ResoniteModLoader/wiki/Creating-Mods
+// ReSharper disable once ClassNeverInstantiated.Global
 public class ResoniteWasm : ResoniteMod {
+    public static ResoniteWasm ModInstance => mInstance!;
+    private static ResoniteWasm? mInstance;
+
+    public static ModConfiguration Config => mInstance!.GetConfiguration()!;
+
     internal const string VERSION_CONSTANT = "1.0.0"; //Changing the version here updates it in all locations needed
     public override string Name => "ResoniteWasm";
     public override string Author => "Lolosia";
@@ -19,10 +34,14 @@ public class ResoniteWasm : ResoniteMod {
     public override string Link => "https://github.com/lolosiax/ResoniteWasm/";
 
     public override void OnEngineInit() {
+        mInstance = this;
+
         Harmony harmony = new("top.lolosia.ResoniteWasm");
         harmony.PatchAll();
 
-        using var engine = new Engine();
+        Config.Save();
+
+        using var engine = new WasmEngine();
         using var module = Module.FromText(
             engine,
             "hello",
@@ -39,13 +58,22 @@ public class ResoniteWasm : ResoniteMod {
         var instance = linker.Instantiate(store, module);
         var run = instance.GetAction("run")!;
         run();
+        
+        Engine.Current.RunPostInit(PostInit);
+
     }
 
-    //Example of how a HarmonyPatch can be formatted, Note that the following isn't a real patch and will not compile.
-    // [HarmonyPatch(typeof(ClassNameHere), "MethodNameHere")]
-    // class ClassNameHere_MethodNameHere_Patch {
-    // 	static void Postfix(ClassNameHere __instance) {
-    // 		Msg("Postfix from ResoniteWasm");
-    // 	}
-    // }
+    private void PostInit() {
+        I18N.Instance.Initialize();
+        
+        Engine.Current.WorldManager.WorldFocused += world => {
+            Msg($"Change to world, {world.Name}");
+        };
+    }
+
+    public override void DefineConfiguration(ModConfigurationDefinitionBuilder builder) {
+        foreach (ModConfigurationKey it in ConfigDefinition.Items) {
+            builder.Key(it);
+        }
+    }
 }
