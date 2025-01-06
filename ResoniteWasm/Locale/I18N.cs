@@ -10,6 +10,7 @@ using HarmonyLib;
 using Newtonsoft.Json;
 
 using ResoniteWasm.Config;
+using ResoniteWasm.Util;
 
 namespace ResoniteWasm.Locale;
 
@@ -77,5 +78,13 @@ public class I18N {
     private void AfterLanguageChanged(LocaleSettings? locale) {
         LoadLocaleMap(locale?.ActiveLocaleCode ?? "en");
         ConfigDefinition.ChangeLanguage();
+        ConsoleLogger.ChangeLanguage();
+    }
+}
+
+public static class I18NGlobal {
+    public static string Local(this string id, params object[] args) {
+        string str = I18N.Instance.GetValue(id);
+        return args.Length == 0 ? str : string.Format(str, args);
     }
 }

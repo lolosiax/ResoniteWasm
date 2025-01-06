@@ -1,6 +1,12 @@
 ﻿{
+  "WinForm.LogWindow.Title": "Resonite Log",
+  "WinForm.LogWindow.AutoScroll.Text": "AutoScroll {0}",
+  "WinForm.LogWindow.Clear.Text": "Clear",
+  "WinForm.LogWindow.LogLength.Text": "LogLength",
+  "WinForm.LogWindow.LogLength.UnLimit.Text": "UnLimit",
+  
   "Config.LanguageNotFound.Name": "Don't have your language? Click on the link at the bottom of the page to add to it.",
-  "Config.ShowConsoleLog.Name": "Print log to the console",
+  "Config.ShowConsoleLog.Name": "Show the log window",
   
   "Dummy": "Dummy"
 }

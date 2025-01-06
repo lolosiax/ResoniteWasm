@@ -36,6 +36,7 @@ public class ResoniteWasm : ResoniteMod {
 
     public override void OnEngineInit() {
         mInstance = this;
+        RunOnUIThread(() => Msg("UiThreadLoaded"));
         ConsoleLogger.Initialize();
 
         Harmony harmony = new("top.lolosia.ResoniteWasm");
